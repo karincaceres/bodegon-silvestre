@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const asset = (name) => `${process.env.PUBLIC_URL}/assets/${name}`;
+const asset = (name) => `${process.env.PUBLIC_URL}/assets/${name}?v=20260701`;
 
 const menuItems = [
   {
