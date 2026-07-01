@@ -4,33 +4,33 @@ const asset = (name) => `${process.env.PUBLIC_URL}/assets/${name}`;
 
 const menuItems = [
   {
-    name: "Tabla de milanesas",
-    description: "Con bastones de queso y salsas de la casa",
-    price: "$4.200",
+    name: "MILANESA SILVESTRE",
+    description: "Con hongos, rúcula, tomates confitados y queso parmesano.",
+    price: "",
     image: asset("milanesa.jpg"),
-    alt: "Tabla de milanesas"
+    alt: "MILANESA SILVESTRE",
   },
   {
-    name: "Asado a las brasas",
-    description: "Tira o costillar, chimichurri y ensalada criolla",
-    price: "$4.100",
+    name: "ENTRAÑA AL HIERRO",
+    description: "Con baba ganoush y criolla de quinoa y durazno ahumado.",
+    price: "",
     image: asset("asado.jpg"),
-    alt: "Asado a las brasas"
+    alt: "ENTRAÑA AL HIERRO",
   },
   {
-    name: "Ravioles caseros",
-    description: "Ricota y espinaca, pomodoro o manteca y salvia",
-    price: "$2.700",
+    name: "FETUCCINI A LA CARBONARA",
+    description: "Pasta casera italiana",
+    price: "",
     image: asset("ravioles.jpg"),
-    alt: "Ravioles caseros"
+    alt: "FETUCCINI A LA CARBONARA",
   },
   {
-    name: "Old Fashioned",
-    description: "Coctelería de autor, el favorito de la casa",
-    price: "$1.800",
+    name: "SILVESTRE WHITE RUSSIAN",
+    description: "Vodka, borghetti y crema",
+    price: "",
     image: asset("old-fashioned.jpg"),
-    alt: "Old Fashioned"
-  }
+    alt: "SILVESTRE WHITE RUSSIAN",
+  },
 ];
 
 const testimonials = [
