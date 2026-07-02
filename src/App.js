@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const asset = (name) => `${process.env.PUBLIC_URL}/assets/${name}?v=20260701`;
+
+const heroSlides = [
+  { image: asset("salon.jpg"), alt: "Salón de Bodegón Silvestre" },
+  { image: asset("exterior.jpg"), alt: "Exterior de Bodegón Silvestre" },
+];
 
 const menuItems = [
   {
@@ -53,6 +58,15 @@ const testimonials = [
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [heroSlide, setHeroSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setHeroSlide((current) => (current + 1) % heroSlides.length);
+    }, 5000);
+
+    return () => window.clearInterval(timer);
+  }, []);
 
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -99,31 +113,55 @@ function App() {
 
       <section className="hero" id="inicio">
         <div className="hero-content wrap">
-          <p className="eyebrow hero-eyebrow">CÓRDOBA · AV. GAUSS 5795</p>
-          <h1>
-            Perfectamente
-            <br />
-            imperfecto.
-          </h1>
-          <p className="hero-copy">
-            Cocina con alma, animales con carácter. Un bodegón donde quedarse y
-            quedarse un poco más.
-          </p>
-          <div className="hero-actions">
-            <a
-              className="button button-primary"
-              href="https://growbrands.net/neworder/silvestre/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Nuestra carta 🌱
-            </a>
-            <button
-              className="button button-outline"
-              onClick={() => scrollTo("reserva")}
-            >
-              Reservar mesa
-            </button>
+          <div className="hero-text">
+            <p className="eyebrow hero-eyebrow">CÓRDOBA · AV. GAUSS 5795</p>
+            <h1>
+              Perfectamente
+              <br />
+              imperfecto.
+            </h1>
+            <p className="hero-copy">
+              Cocina con alma, animales con carácter. Un bodegón donde quedarse y
+              quedarse un poco más.
+            </p>
+            <div className="hero-actions">
+              <a
+                className="button button-primary"
+                href="https://growbrands.net/neworder/silvestre/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Nuestra carta 🌱
+              </a>
+              <button
+                className="button button-outline"
+                onClick={() => scrollTo("reserva")}
+              >
+                Reservar mesa
+              </button>
+            </div>
+          </div>
+
+          <div className="hero-slider" aria-label="Galería destacada">
+            {heroSlides.map((slide, index) => (
+              <img
+                className={index === heroSlide ? "active" : ""}
+                src={slide.image}
+                alt={slide.alt}
+                key={slide.image}
+              />
+            ))}
+            <div className="hero-slider-controls">
+              {heroSlides.map((slide, index) => (
+                <button
+                  className={index === heroSlide ? "active" : ""}
+                  onClick={() => setHeroSlide(index)}
+                  aria-label={`Ver imagen ${index + 1}`}
+                  aria-current={index === heroSlide ? "true" : undefined}
+                  key={slide.image}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
