@@ -9,6 +9,24 @@ const heroSlides = [
   { image: asset("Gauss.jpg"), alt: "Gauss Bodegón Silvestre" },
 ];
 
+const venuePhotos = [
+  {
+    name: "SALÓN PRINCIPAL",
+    image: asset("salon.jpg"),
+    alt: "Salón principal de Bodegón Silvestre",
+  },
+  {
+    name: "NUESTRA COCINA",
+    image: asset("asado.jpg"),
+    alt: "Plato de la cocina de Bodegón Silvestre",
+  },
+  {
+    name: "EL BODEGÓN",
+    image: asset("salon2.jpg"),
+    alt: "Ambiente de Bodegón Silvestre",
+  },
+];
+
 const testimonials = [
   {
     quote: "El ambiente más silvestre y acogedor de Córdoba. Siempre volvemos.",
@@ -193,7 +211,7 @@ function App() {
           <span>CUBIERTOS</span>
         </div>
         <div>
-          <strong>4.9★</strong>
+          <strong>4.5★</strong>
           <span>EN GOOGLE</span>
         </div>
       </section>
@@ -297,13 +315,16 @@ function App() {
             {/* <a href="#reserva">Ver más →</a> */}
           </div>
           <div className="gallery-grid">
-            <img
-              className="gallery-main"
-              src={asset("salon.jpg")}
-              alt="Salón principal"
-            />
-            <img src={asset("asado.jpg")} alt="Exterior del restaurante" />
-            <img src={asset("salon2.jpg")} alt="Plato servido en la salon" />
+            {venuePhotos.map((photo, index) => (
+              <button
+                className={index === 0 ? "gallery-photo gallery-main" : "gallery-photo"}
+                onClick={() => setSelectedGalleryItem(photo)}
+                aria-label={`Ampliar ${photo.name}`}
+                key={photo.image}
+              >
+                <img src={photo.image} alt={photo.alt} />
+              </button>
+            ))}
           </div>
         </div>
       </section>
