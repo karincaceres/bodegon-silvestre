@@ -1,41 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const asset = (name) => `${process.env.PUBLIC_URL}/assets/${name}?v=20260701`;
+const galleryAsset = (name, version) =>
+  `${process.env.PUBLIC_URL}/assets/gallery/${name}?v=${version}`;
 
 const heroSlides = [
-  { image: asset("salon.jpg"), alt: "Salón de Bodegón Silvestre" },
-  { image: asset("exterior.jpg"), alt: "Exterior de Bodegón Silvestre" },
-];
-
-const menuItems = [
-  {
-    name: "MILANESA SILVESTRE",
-    description: "Con hongos, rúcula, tomates confitados y queso parmesano.",
-    price: "",
-    image: asset("milanesa.jpg"),
-    alt: "MILANESA SILVESTRE",
-  },
-  {
-    name: "ENTRAÑA AL HIERRO",
-    description: "Con baba ganoush y criolla de quinoa y durazno ahumado.",
-    price: "",
-    image: asset("asado.jpg"),
-    alt: "ENTRAÑA AL HIERRO",
-  },
-  {
-    name: "FETUCCINI A LA CARBONARA",
-    description: "Pasta casera italiana",
-    price: "",
-    image: asset("ravioles.jpg"),
-    alt: "FETUCCINI A LA CARBONARA",
-  },
-  {
-    name: "SILVESTRE WHITE RUSSIAN",
-    description: "Vodka, borghetti y crema",
-    price: "",
-    image: asset("old-fashioned.jpg"),
-    alt: "SILVESTRE WHITE RUSSIAN",
-  },
+  { image: asset("Valle.jpg"), alt: "Valle Bodegón Silvestre" },
+  { image: asset("Gauss.jpg"), alt: "Gauss Bodegón Silvestre" },
 ];
 
 const testimonials = [
@@ -59,6 +30,9 @@ const testimonials = [
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroSlide, setHeroSlide] = useState(0);
+  const [galleryItems, setGalleryItems] = useState([]);
+  const [selectedGalleryItem, setSelectedGalleryItem] = useState(null);
+  const galleryTrackRef = useRef(null);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -68,9 +42,52 @@ function App() {
     return () => window.clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    fetch(`${process.env.PUBLIC_URL}/assets/gallery/manifest.json`, {
+      cache: "no-store",
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("No se pudo cargar la galería");
+        return response.json();
+      })
+      .then((items) =>
+        setGalleryItems(
+          items.map((item) => ({
+            name: item.name,
+            image: galleryAsset(item.filename, item.version),
+            alt: item.name,
+          }))
+        )
+      )
+      .catch(() => setGalleryItems([]));
+  }, []);
+
+  useEffect(() => {
+    if (!selectedGalleryItem) return undefined;
+
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setSelectedGalleryItem(null);
+    };
+
+    document.body.classList.add("modal-open");
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.classList.remove("modal-open");
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [selectedGalleryItem]);
+
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
+  };
+
+  const scrollGallery = (direction) => {
+    galleryTrackRef.current?.scrollBy({
+      left: direction * 352,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -182,7 +199,7 @@ function App() {
       </section>
 
       <section className="menu-section light-section" id="menu">
-        <div className="wrap">
+        <div className="wrap featured-wrap">
           <div className="section-heading">
             <h2>Los destacados</h2>
             <a
@@ -193,20 +210,69 @@ function App() {
               Nuestra carta 🌱 →
             </a>
           </div>
-          <div className="menu-grid">
-            {menuItems.map((item) => (
-              <article className="menu-card" key={item.name}>
-                <img src={item.image} alt={item.alt} />
-                <div>
-                  <h3>{item.name}</h3>
-                  <p>{item.description}</p>
-                  <strong>{item.price}</strong>
-                </div>
-              </article>
-            ))}
+          <div className="featured-carousel">
+            <button
+              className="carousel-arrow carousel-arrow-left"
+              onClick={() => scrollGallery(-1)}
+              aria-label="Ver fotos anteriores"
+            >
+              ←
+            </button>
+            <div className="featured-track" ref={galleryTrackRef}>
+              {galleryItems.map((item) => (
+                <button
+                  className="polaroid-card"
+                  onClick={() => setSelectedGalleryItem(item)}
+                  aria-label={`Ampliar ${item.name}`}
+                  key={item.image}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.alt}
+                    onError={() =>
+                      setGalleryItems((currentItems) =>
+                        currentItems.filter(
+                          (currentItem) => currentItem.image !== item.image
+                        )
+                      )
+                    }
+                  />
+                  <span>{item.name}</span>
+                </button>
+              ))}
+            </div>
+            <button
+              className="carousel-arrow carousel-arrow-right"
+              onClick={() => scrollGallery(1)}
+              aria-label="Ver fotos siguientes"
+            >
+              →
+            </button>
           </div>
         </div>
       </section>
+
+      {selectedGalleryItem && (
+        <div
+          className="gallery-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label={selectedGalleryItem.name}
+          onClick={() => setSelectedGalleryItem(null)}
+        >
+          <button
+            className="gallery-modal-close"
+            onClick={() => setSelectedGalleryItem(null)}
+            aria-label="Cerrar imagen ampliada"
+          >
+            ×
+          </button>
+          <figure onClick={(event) => event.stopPropagation()}>
+            <img src={selectedGalleryItem.image} alt={selectedGalleryItem.alt} />
+            <figcaption>{selectedGalleryItem.name}</figcaption>
+          </figure>
+        </div>
+      )}
 
       <section className="identity">
         <div className="wrap identity-content">
@@ -227,8 +293,8 @@ function App() {
       <section className="gallery-section" id="galeria">
         <div className="wrap">
           <div className="section-heading dark-heading">
-            <h2>El lugar</h2>
-            <a href="#reserva">Ver más →</a>
+            <h2>El Bodegón</h2>
+            {/* <a href="#reserva">Ver más →</a> */}
           </div>
           <div className="gallery-grid">
             <img
@@ -236,8 +302,8 @@ function App() {
               src={asset("salon.jpg")}
               alt="Salón principal"
             />
-            <img src={asset("exterior.jpg")} alt="Exterior del restaurante" />
-            <img src={asset("barra.jpg")} alt="Plato servido en la barra" />
+            <img src={asset("asado.jpg")} alt="Exterior del restaurante" />
+            <img src={asset("salon2.jpg")} alt="Plato servido en la salon" />
           </div>
         </div>
       </section>
@@ -256,7 +322,7 @@ function App() {
               Reservar por WhatsApp
             </a>
             <span className="button button-outline registration-pending">
-              Registrate para recibir más info
+              QUIERO BENEFICIOS
             </span>
           </div>
         </div>

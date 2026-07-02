@@ -4,7 +4,10 @@
   "private": true,
   "homepage": ".",
   "scripts": {
+    "gallery": "node scripts/generate-gallery-manifest.js",
+    "prestart": "npm run gallery",
     "start": "react-scripts start",
+    "prebuild": "npm run gallery",
     "build": "react-scripts build"
   },
   "dependencies": {
