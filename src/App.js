@@ -156,8 +156,8 @@ function App() {
               imperfecto.
             </h1>
             <p className="hero-copy">
-              Cocina con alma, animales con carácter. Un bodegón donde quedarse y
-              quedarse un poco más.
+              Cocina con alma, animales con carácter. Un bodegón donde quedarse
+              y quedarse un poco más.
             </p>
             <div className="hero-actions">
               <a
@@ -250,8 +250,8 @@ function App() {
                     onError={() =>
                       setGalleryItems((currentItems) =>
                         currentItems.filter(
-                          (currentItem) => currentItem.image !== item.image
-                        )
+                          (currentItem) => currentItem.image !== item.image,
+                        ),
                       )
                     }
                   />
@@ -286,7 +286,10 @@ function App() {
             ×
           </button>
           <figure onClick={(event) => event.stopPropagation()}>
-            <img src={selectedGalleryItem.image} alt={selectedGalleryItem.alt} />
+            <img
+              src={selectedGalleryItem.image}
+              alt={selectedGalleryItem.alt}
+            />
             <figcaption>{selectedGalleryItem.name}</figcaption>
           </figure>
         </div>
@@ -317,7 +320,9 @@ function App() {
           <div className="gallery-grid">
             {venuePhotos.map((photo, index) => (
               <button
-                className={index === 0 ? "gallery-photo gallery-main" : "gallery-photo"}
+                className={
+                  index === 0 ? "gallery-photo gallery-main" : "gallery-photo"
+                }
                 onClick={() => setSelectedGalleryItem(photo)}
                 aria-label={`Ampliar ${photo.name}`}
                 key={photo.image}
@@ -340,11 +345,16 @@ function App() {
               target="_blank"
               rel="noreferrer"
             >
-              Reservar por WhatsApp
+              RESERVAR POR WHATSAPP
             </a>
-            <span className="button button-outline registration-pending">
+            <a
+              className="button button-outline "
+              href="https://forms.gle/VHzx1WMaNGMp9ixR8"
+              target="_blank"
+              rel="noreferrer"
+            >
               QUIERO BENEFICIOS
-            </span>
+            </a>
           </div>
         </div>
       </section>

@@ -91,6 +91,7 @@ a { color: inherit; text-decoration: none; }
 .button:hover { transform: translateY(-2px); }
 .button-primary { background: var(--rust); }
 .button-primary:hover { background: #ad6e59; }
+.button-outline:hover { background: --muted; }
 .button-outline { background: rgba(0,0,0,0.08); border-color: rgba(244,240,232,.4); }
 
 .hero {
@@ -372,7 +373,7 @@ a { color: inherit; text-decoration: none; }
 .reservation > div > p { margin: 12px 0 34px; color: #9e9f94; }
 .reservation-actions { display: grid; gap: 12px; }
 .reservation-actions .button { display: grid; place-items: center; }
-.registration-pending { opacity: .55; cursor: default; }
+.registration-pending { opacity: .55; cursor: pointer; }
 
 .contact { padding: 78px 0; }
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
