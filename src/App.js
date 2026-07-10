@@ -146,6 +146,15 @@ function App() {
         </button>
       </header>
 
+      <a
+        className="button button-primary floating-benefits"
+        href="https://forms.gle/VHzx1WMaNGMp9ixR8"
+        target="_blank"
+        rel="noreferrer"
+      >
+        QUIERO BENEFICIOS
+      </a>
+
       <section className="hero" id="inicio">
         <div className="hero-content wrap">
           <div className="hero-text">
@@ -346,14 +355,6 @@ function App() {
               rel="noreferrer"
             >
               RESERVAR POR WHATSAPP
-            </a>
-            <a
-              className="button button-outline "
-              href="https://forms.gle/VHzx1WMaNGMp9ixR8"
-              target="_blank"
-              rel="noreferrer"
-            >
-              QUIERO BENEFICIOS
             </a>
           </div>
         </div>
