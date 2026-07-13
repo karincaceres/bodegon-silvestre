@@ -5,11 +5,14 @@ const galleryDir = path.join(__dirname, "..", "public", "assets", "gallery");
 const manifestPath = path.join(galleryDir, "manifest.json");
 const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
 
+const normalizeFilename = (filename) =>
+  filename.normalize("NFC").toLowerCase();
+
 const titleOverrides = {
-  "milanesa.jpg": "MILANESA SILVESTRE",
-  "asado.jpg": "ENTRAÑA AL HIERRO",
-  "ravioles.jpg": "FETUCCINI A LA CARBONARA",
-  "old-fashioned.jpg": "SILVESTRE WHITE RUSSIAN",
+  "milanesa silvestre.jpg": "MILANESA SILVESTRE",
+  "entraña al hierro.jpg": "BIFE DE CHORIZO",
+  "fetuccini a la carbonara.jpg": "FLAN CON DULCE DE LECHE",
+  "especialidad cafetería.jpg": "CAFÉ DE ESPECIALIDAD",
 };
 
 const titleFromFilename = (filename) =>
@@ -27,7 +30,7 @@ const items = fs
   .filter((filename) => imageExtensions.has(path.extname(filename).toLowerCase()))
   .sort((a, b) => a.localeCompare(b, "es", { numeric: true }))
   .map((filename) => ({
-    name: titleOverrides[filename] || titleFromFilename(filename),
+    name: titleOverrides[normalizeFilename(filename)] || titleFromFilename(filename),
     filename,
     version: Math.round(fs.statSync(path.join(galleryDir, filename)).mtimeMs),
   }));
