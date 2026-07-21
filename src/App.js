@@ -16,9 +16,9 @@ const venuePhotos = [
     alt: "Salón principal de Bodegón Silvestre",
   },
   {
-    name: "NUESTRA COCINA",
+    name: "NUESTRA GALERIA",
     image: asset("asado.jpg"),
-    alt: "Plato de la cocina de Bodegón Silvestre",
+    alt: "Galeria de Bodegón Silvestre",
   },
   {
     name: "EL BODEGÓN",
